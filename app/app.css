@@ -28,3 +28,8 @@
   content: "";
   padding: 0;
 }
+
+#users-list tbody tr:hover td, #users-list  tbody tr:hover th {
+  background-color: #9B9B9B;
+  cursor: pointer;
+}
