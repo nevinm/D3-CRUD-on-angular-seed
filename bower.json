@@ -11,6 +11,12 @@
     "angular-loader": "~1.4.0",
     "angular-mocks": "~1.4.0",
     "html5-boilerplate": "~5.2.0",
-    "bootstrap": "~3.3.5"
+    "bootstrap": "~3.3.5",
+    "angular-css": "~1.0.7",
+    "angular-bootstrap": "~0.13.2",
+    "ngDialog": "~0.4.0"
+  },
+  "resolutions": {
+    "angular": "~1.3.x"
   }
 }
