@@ -1,1 +1,25 @@
-<p>This is the partial for Profile.</p>
+<div>
+    <div class='container-fluid add-button-container'>
+        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#addUser" ng-click="addUser()">Add User</button>
+    </div>
+    <table id='users-list' class="table table-bordered table-hover table-condensed">
+        <thead>
+            <tr>
+                <th>City</th>
+                <th>Company Name</th>
+                <th>Customer ID</th>
+                <th>Edit</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="user in userDetails">
+                <td ng-click='editUser($index, user)'>{{user.City}}</td>
+                <td ng-click='editUser($index, user)'>{{user.CompanyName}}</td>
+                <td ng-click='editUser($index, user)'>{{user.CustomerID}}</td>
+                <td>
+                    <button class='btn btn-danger' ng-click='deleteUser($index)'>Delete</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
