@@ -75,35 +75,3 @@ app.controller('userCtrl', function($rootScope, $scope, $modal, $http) {
         // }, function() {});
     }
 });
-
-app.controller('deleteUserCtrl', function($rootScope, $scope, $modalInstance, index) {
-    $scope.index = index;
-
-    $scope.ok = function() {
-        $scope.userDetails.splice(index, 1);
-        $modalInstance.close($scope.index);
-    };
-
-    $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
-    };
-});
-
-app.controller('addUserCtrl', function($rootScope, $scope, $modalInstance, user) {
-    $scope.ok = function() {
-        $modalInstance.close($scope.user);
-    };
-    $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
-    };
-});
-
-app.controller('editUserCtrl', function($rootScope, $scope, $modalInstance, user) {
-    $scope.user = user;
-    $scope.ok = function() {
-        $modalInstance.close($scope.user);
-    };
-    $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
-    };
-});
