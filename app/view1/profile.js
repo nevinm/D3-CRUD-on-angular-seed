@@ -42,12 +42,7 @@ app.controller('userCtrl', function($rootScope, $scope, $modal, $http) {
             animation: $scope.animationsEnabled,
             templateUrl: 'view1/addUser.html',
             size: "sm",
-            controller: 'addUserCtrl',
-            resolve: {
-                user: function() {
-                    return $scope.user;
-                }
-            }
+            controller: 'addUserCtrl'
         });
 
         addInstance.result.then(function(data) {
@@ -56,23 +51,26 @@ app.controller('userCtrl', function($rootScope, $scope, $modal, $http) {
         }, function() {});
     }
 
-    $scope.editUser = function(index, scope) {
+    $scope.editUser = function(index, currentUser) {
+        currentUser.index = index;
         var editInstance = $modal.open({
             animation: $scope.animationsEnabled,
             templateUrl: 'view1/addUser.html',
             size: "sm",
             controller: 'editUserCtrl',
             resolve: {
-                user: function() {
-                    return scope;
+                currentUser: function() {
+                    return currentUser;
                 }
             }
         });
 
-        // addInstance.result.then(function(data) {
-        //     $scope.user = data;
-        //     $rootScope.userDetails($scope.user);
-        // }, function() {});
+        editInstance.result.then(function(data) {
+            $scope.user = data;
+            $rootScope.userDetails[index].City = data.City;
+            $rootScope.userDetails[index].CompanyName = data.CompanyName;
+            $rootScope.userDetails[index].CustomerID = data.CustomerID;
+        }, function() {});
     }
 });
 
@@ -89,19 +87,25 @@ app.controller('deleteUserCtrl', function($rootScope, $scope, $modalInstance, in
     };
 });
 
-app.controller('addUserCtrl', function($rootScope, $scope, $modalInstance, user) {
+app.controller('addUserCtrl', function($rootScope, $scope, $modalInstance) {
     $scope.ok = function() {
-        $modalInstance.close($scope.user);
+        $modalInstance.close($scope.newuser);
     };
     $scope.cancel = function() {
         $modalInstance.dismiss('cancel');
     };
 });
 
-app.controller('editUserCtrl', function($rootScope, $scope, $modalInstance, user) {
-    $scope.user = user;
+app.controller('editUserCtrl', function($rootScope, $scope, $modalInstance, currentUser) {
+    $scope.newuser = {
+        "City": currentUser.City,
+        "CompanyName": currentUser.CompanyName,
+        "CustomerID": currentUser.CustomerID,
+        "$$hashKey": currentUser.$$hashKey,
+        "index": currentUser.index
+    };
     $scope.ok = function() {
-        $modalInstance.close($scope.user);
+        $modalInstance.close($scope.newuser);
     };
     $scope.cancel = function() {
         $modalInstance.dismiss('cancel');
