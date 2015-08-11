@@ -16,10 +16,12 @@ app.config(['$routeProvider', function($routeProvider) {
 app.controller('userCtrl', function($rootScope, $scope, $modal, $http) {
     $rootScope.userDetails = [];
     $scope.user = {};
+    $scope.loading = true;
     $scope.animationsEnabled = true;
 
     $http.get('http://inorthwind.azurewebsites.net/Service1.svc/getAllCustomers')
         .then(function(res) {
+            $scope.loading = false;
             $rootScope.userDetails = res.data.GetAllCustomersResult;
         });
 
