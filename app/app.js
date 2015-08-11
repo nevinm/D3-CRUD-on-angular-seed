@@ -6,21 +6,29 @@ angular.module('studyApp', [
     'ngProgress',
     'studyAppProfile',
     'studyApp.view2',
-    'studyApp.version',
     'ui.bootstrap'
 ]).
 config(['$routeProvider', function($routeProvider) {
-    $routeProvider.otherwise({
-        redirectTo: '/profile'
-    });
-}]).
+    $routeProvider
+        .when('/profile', {
+            templateUrl: "view1/profile.html",
+            controller: "userCtrl"
+        })
+        .when('/view2', {
+            templateUrl: "view2/view2.html",
+            controller: "View2Ctrl"
+        })
+        .otherwise({
+            redirectTo: '/profile'
+        });
+}])
 
-run(['$rootScope', function($rootScope, ngProgressFactory) {
-    $rootScope.$on('$routeChangeStart', function(ev, data) {
-        ngProgress.start();
-    });
+// run(['$rootScope', function($rootScope, ngProgressFactory) {
+//     $rootScope.$on('$routeChangeStart', function(ev, data) {
+//         ngProgress.start();
+//     });
 
-    $rootScope.$on('$routeChangeSuccess', function(ev, data) {
-        ngProgress.complete();
-    });
-}]);
+//     $rootScope.$on('$routeChangeSuccess', function(ev, data) {
+//         ngProgress.complete();
+//     });
+// }]);

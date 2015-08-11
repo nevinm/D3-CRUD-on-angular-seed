@@ -4,19 +4,20 @@
         <h3 class="modal-title">Adding</h3>
     </div>
     <div class="modal-body">
-        <form novalidate role='form'>
+        <form name='user-form' novalidate role='form'>
             <div class='form-group'>
                 <label for='City'>City</label>
-                <input type='text' class='form-control' ng-model='newuser.City'>
+                <input type='text' class='form-control' ng-model='newuser.City' required>
             </div>
             <div class='form-group'>
                 <label for='CompanyName'>Company Name</label>
-                <input type='text' class='form-control' ng-model='newuser.CompanyName'>
+                <input type='text' class='form-control' ng-model='newuser.CompanyName' required>
             </div>
             <div class='form-group'>
                 <label for='CustomerId'>Customer ID</label>
-                <input type='text' class='form-control' ng-model='newuser.CustomerID'>
+                <input type='text' class='form-control' ng-model='newuser.CustomerID' required>
             </div>
+            <div>Form is {{user-form.$valid}}</div>
             <div class="modal-footer">
                 <button class="btn btn-primary" type='submit' ng-click="ok()">OK</button>
                 <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
