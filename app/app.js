@@ -6,13 +6,15 @@ angular.module('studyApp', [
     'ngProgress',
     'studyAppProfile',
     'studyApp.view2',
+    'door3.css',
     'ui.bootstrap'
 ]).
 config(['$routeProvider', function($routeProvider) {
     $routeProvider
         .when('/profile', {
             templateUrl: "view1/profile.html",
-            controller: "userCtrl"
+            controller: "userCtrl",
+            css: 'view1/profile.css'
         })
         .when('/view2', {
             templateUrl: "view2/view2.html",

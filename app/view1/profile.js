@@ -5,23 +5,17 @@ var app = angular.module('studyAppProfile', [
     'ui.bootstrap'
 ]);
 
-app.config(['$routeProvider', function($routeProvider) {
-    $routeProvider.when('/profile', {
-        templateUrl: 'view1/profile.html',
-        controller: 'userCtrl',
-        css: 'view1/profile.css'
-    });
-}])
-
 app.controller('userCtrl', function($rootScope, $scope, $modal, $http) {
     $rootScope.userDetails = [];
     $scope.user = {};
     $scope.loading = true;
+    $scope.loaded = false;
     $scope.animationsEnabled = true;
 
     $http.get('http://inorthwind.azurewebsites.net/Service1.svc/getAllCustomers')
         .then(function(res) {
             $scope.loading = false;
+            $scope.loaded = true;
             $rootScope.userDetails = res.data.GetAllCustomersResult;
         });
 
