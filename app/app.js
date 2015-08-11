@@ -5,7 +5,7 @@ angular.module('studyApp', [
     'ngRoute',
     'ngProgress',
     'studyAppProfile',
-    'studyApp.view2',
+    'studyApp.DynamicCharts',
     'door3.css',
     'ui.bootstrap'
 ]).
@@ -16,9 +16,10 @@ config(['$routeProvider', function($routeProvider) {
             controller: "userCtrl",
             css: 'view1/profile.css'
         })
-        .when('/view2', {
-            templateUrl: "view2/view2.html",
-            controller: "View2Ctrl"
+        .when('/DynamicCharts', {
+            templateUrl: "view2/dynamic_charts.html",
+            controller: "dynamicChartsCtrl",
+            css: "view2/dynamic_charts.css"
         })
         .otherwise({
             redirectTo: '/profile'
