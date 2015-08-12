@@ -1,6 +1,6 @@
 var dynamicApp = angular.module('studyApp.DynamicCharts', ['ngRoute']);
 
-dynamicApp.controller('dynamicChartsCtrl', function($scope) {
+dynamicApp.controller('dynamicChartsCtrl', function($scope, $interval) {
 	$scope.salesData = [
     {hour: 1,sales: 54},
     {hour: 2,sales: 66},
@@ -13,31 +13,48 @@ dynamicApp.controller('dynamicChartsCtrl', function($scope) {
     {hour: 9,sales: 55},
     {hour: 10,sales: 30}
   ];
+
+  $interval(function(){
+  	var hour = $scope.salesData.length+1,
+  	sales = Math.round(Math.random()*100);
+
+  	$scope.salesData.push({
+  		"hour": hour,
+  		"sales": sales
+  	});
+  },1000,100);
 });
 
-dynamicApp.directive('linearChart', function($window) {
+dynamicApp.directive('linearChart', function($parse, $window) {
     return {
         restrict: 'EA', // E = Element, A = Attribute, C = Class, M = Comment
         template: '<svg width="850" height="200"></svg>',
         link: function(scope, iElm, iAttrs, controller) {
-            var salesDatatoPlot = scope[iAttrs.chartData],
+        	var exp = $parse(iAttrs.chartData);
+            	var salesDataToPlot =exp(scope),
                 padding = 20,
                 pathClass = 'path',
-                xScale, yScale, xAxisGen, yAxisGen, lineFun,
+                xScale, yScale, xAxisGen, yAxisGen, lineRender,
                 d3 = $window.d3,
                 rawSvg = iElm.find("svg")[0],
                 svg = d3.select(rawSvg);
 
+            //Watching the array if any changes occur.
+            scope.$watchCollection(exp, function(newData, oldData){
+                salesDataToPlot = newData;
+             	reDrawLineChart();
+            });
+
             function setChartParams() {
                 //Plotting X-Hour and Y-Sales.
                 xScale = d3.scale.linear()
-                    .domain([0, d3.max(salesDatatoPlot, function(d) {
+                    .domain([0, d3.max(salesDataToPlot, function(d) {
                         return d.hour;
                     })])
                     .range([padding + 5, rawSvg.clientWidth - padding]);
 
                 yScale = d3.scale.linear()
-                    .domain([0, d3.max(salesDatatoPlot, function(d) {
+                    .domain([0, d3.max(salesDataToPlot, function(d) {
                         return d.sales;
                     })])
                     .range([rawSvg.clientHeight - padding,0]);
@@ -45,14 +62,14 @@ dynamicApp.directive('linearChart', function($window) {
                 xAxisGen = d3.svg.axis()
                 			.scale(xScale)
                 			.orient("bottom")
-                			.ticks(salesDatatoPlot.length -1);
+                			.ticks(10);
 
                 yAxisGen = d3.svg.axis()
-                			.scale(xScale)
+                			.scale(yScale)
                 			.orient("left")
                 			.ticks(5);
 
-                lineFun = d3.svg.line()
+                lineRender = d3.svg.line()
                 			.x(function(d){
                 				return xScale(d.hour);
                 			})
@@ -61,8 +78,11 @@ dynamicApp.directive('linearChart', function($window) {
                 			})
                 			.interpolate("basis");
             }
+
             function drawLineChart(){
             	setChartParams();
+
+            	svg.attr("class","parentSvg");
             		
             	svg.append("svg:g")
             		.attr("class", "x axis")
@@ -76,13 +96,24 @@ dynamicApp.directive('linearChart', function($window) {
 
 				svg.append("svg:path")
 				    .attr({
-				        d: lineFun(salesDataToPlot),
+				        d: lineRender(salesDataToPlot),
 				        "stroke": "blue",
 				        "stroke-width": 2,
 				        "fill": "none",
 				        "class": pathClass
 				    });
             }
+
+			function reDrawLineChart() {
+			  setChartParams();
+			  svg.selectAll("g.y.axis").call(yAxisGen);
+			  svg.selectAll("g.x.axis").call(xAxisGen);
+			 
+			  svg.selectAll("." + pathClass)
+			     .attr({
+			       d: lineRender(salesDataToPlot)
+			     });
+			}
             drawLineChart();
         }
     };
