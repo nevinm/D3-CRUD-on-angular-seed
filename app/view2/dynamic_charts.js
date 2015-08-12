@@ -30,8 +30,10 @@ dynamicApp.directive('linearChart', function($parse, $window) {
         restrict: 'EA', // E = Element, A = Attribute, C = Class, M = Comment
         template: '<svg width="850" height="200"></svg>',
         link: function(scope, iElm, iAttrs, controller) {
-        	var exp = $parse(iAttrs.chartData);
-            	var salesDataToPlot =exp(scope),
+        	// salesData = scope[iAttrs.chartData];
+          	// salesDataToPlot =exp(scope),
+        	var exp = $parse(iAttrs.chartData),
+            	salesDataToPlot =exp(scope),
                 padding = 20,
                 pathClass = 'path',
                 xScale, yScale, xAxisGen, yAxisGen, lineRender,
