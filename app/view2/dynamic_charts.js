@@ -30,10 +30,7 @@ dynamicApp.directive('linearChart', function($parse, $window) {
         restrict: 'EA', // E = Element, A = Attribute, C = Class, M = Comment
         template: '<svg width="850" height="200"></svg>',
         link: function(scope, iElm, iAttrs, controller) {
-        	// salesData = scope[iAttrs.chartData];
-          	// salesDataToPlot =exp(scope),
-        	var exp = $parse(iAttrs.chartData),
-            	salesDataToPlot =exp(scope),
+            var salesDataToPlot = scope[iAttrs.chartData],
                 padding = 20,
                 pathClass = 'path',
                 xScale, yScale, xAxisGen, yAxisGen, lineRender,
@@ -42,7 +39,7 @@ dynamicApp.directive('linearChart', function($parse, $window) {
                 svg = d3.select(rawSvg);
 
             //Watching the array if any changes occur.
-            scope.$watchCollection(exp, function(newData, oldData){
+            scope.$watchCollection("salesData", function(newData, oldData){
                 salesDataToPlot = newData;
              	reDrawLineChart();
             });
