@@ -1,6 +1,7 @@
 var dynamicApp = angular.module('studyApp.DynamicCharts', ['ngRoute']);
 
 dynamicApp.controller('dynamicChartsCtrl', function($scope, $interval) {
+    $scope.chartVisible = 'bar';
 	$scope.salesData = [
     {hour: 1,sales: 54},
     {hour: 2,sales: 66},
@@ -22,7 +23,7 @@ dynamicApp.controller('dynamicChartsCtrl', function($scope, $interval) {
   		"hour": hour,
   		"sales": sales
   	});
-  },1000,100);
+  },1000,1000);
 });
 
 dynamicApp.directive('linearChart', function($parse, $window) {
@@ -116,4 +117,89 @@ dynamicApp.directive('linearChart', function($parse, $window) {
             drawLineChart();
         }
     };
+});
+
+dynamicApp.directive('barChart', function($parse,$window){
+    return {
+        restrict: "EA",
+        template: '<svg width="850" height="200"></svg>',
+        link: function(scope, iElm, iAttrs, controller) {
+               var salesDataToPlot = scope[iAttrs.chartData],
+                padding = 20,
+                pathClass = 'path',
+                xScale, yScale, xAxisGen, yAxisGen, lineRender,
+                d3 = $window.d3,
+                rawSvg = iElm.find("svg")[0],
+                svg = d3.select(rawSvg);
+
+            function setbarChartParams() {
+                //Plotting X-Hour and Y-Sales.
+                xScale = d3.scale.linear()
+                    .domain([0, d3.max(salesDataToPlot, function(d) {
+                        return d.hour;
+                    })])
+                    .range([padding + 5, rawSvg.clientWidth - padding]);
+
+                yScale = d3.scale.linear()
+                    .domain([0, d3.max(salesDataToPlot, function(d) {
+                        return d.sales;
+                    })])
+                    .range([rawSvg.clientHeight - padding,0]);
+
+                xAxisGen = d3.svg.axis()
+                            .scale(xScale)
+                            .orient("bottom")
+                            .ticks(10)
+                            .tickSubdivide(true);
+
+                yAxisGen = d3.svg.axis()
+                            .scale(yScale)
+                            .orient("left")
+                            .ticks(5)
+                            .tickSubdivide(true);
+            }
+
+            function drawLineChart(){
+                setbarChartParams();
+
+                svg.attr("class","parentSvg");
+                    
+                svg.append("svg:g")
+                    .attr("class", "x axis")
+                    .attr("transform", "translate(0,180)")
+                    .call(xAxisGen);
+
+                svg.append("svg:g") 
+                    .attr("class", "y axis")
+                    .attr("transform", "translate(20,0)")
+                    .call(yAxisGen);
+
+                svg.selectAll('rect')
+                    .data(salesDataToPlot)
+                    .enter()
+                    .append('rect')
+                    .attr('x', function(d) {
+                      return xScale(d.hour);
+                      })
+                    .attr('y',function(d) {
+                      return yScale(d.sales);
+                      })
+                    .attr('width', 20)
+                    .attr('height', function(d){
+                        return (rawSvg.clientHeight - yScale(d.sales))
+                    })
+                    .attr("transform","translate(0,-20)")
+                    .attr('fill', '#6B6B6B')
+                    .on('mouseover', function(d) {
+                      d3.select(this)
+                        .attr('fill', 'red');
+                    })
+                    .on('mouseout', function(d) {
+                      d3.select(this)
+                        .attr('fill', '#6B6B6B');
+                    });
+            }
+            drawLineChart();
+        }
+    }
 });

@@ -23,3 +23,7 @@ h1{
 .parentSvg{
 	margin-top: 50px;
 }
+
+#line-chart, #bar-chart{
+  /*display: none;*/
+}
