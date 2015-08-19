@@ -45,7 +45,7 @@ dynamicApp.directive('linearChart', function($parse, $window) {
              	reDrawLineChart();
             });
 
-            function setChartParams() {
+            function setlineChartParams() {
                 //Plotting X-Hour and Y-Sales.
                 xScale = d3.scale.linear()
                     .domain([0, d3.max(salesDataToPlot, function(d) {
@@ -80,7 +80,7 @@ dynamicApp.directive('linearChart', function($parse, $window) {
             }
 
             function drawLineChart(){
-            	setChartParams();
+            	setlineChartParams();
 
             	svg.attr("class","parentSvg");
             		
@@ -105,7 +105,7 @@ dynamicApp.directive('linearChart', function($parse, $window) {
             }
 
 			function reDrawLineChart() {
-			  setChartParams();
+			  setlineChartParams();
 			  svg.selectAll("g.y.axis").call(yAxisGen);
 			  svg.selectAll("g.x.axis").call(xAxisGen);
 			 
@@ -119,18 +119,24 @@ dynamicApp.directive('linearChart', function($parse, $window) {
     };
 });
 
-dynamicApp.directive('barChart', function($parse,$window){
+dynamicApp.directive('barChart', function( $parse, $window){
     return {
         restrict: "EA",
         template: '<svg width="850" height="200"></svg>',
         link: function(scope, iElm, iAttrs, controller) {
                var salesDataToPlot = scope[iAttrs.chartData],
                 padding = 20,
-                pathClass = 'path',
-                xScale, yScale, xAxisGen, yAxisGen, lineRender,
+                rectClass = 'rect',
+                xScale, yScale, xAxisGen, yAxisGen, barRender,
                 d3 = $window.d3,
                 rawSvg = iElm.find("svg")[0],
                 svg = d3.select(rawSvg);
+
+            //Watching the array if any changes occur.
+            // scope.$watchCollection("salesData", function(newData, oldData){
+            //     salesDataToPlot = newData;
+            //     reDrawbarChart();
+            // });
 
             function setbarChartParams() {
                 //Plotting X-Hour and Y-Sales.
@@ -159,7 +165,7 @@ dynamicApp.directive('barChart', function($parse,$window){
                             .tickSubdivide(true);
             }
 
-            function drawLineChart(){
+            function drawBarChart(){
                 setbarChartParams();
 
                 svg.attr("class","parentSvg");
@@ -174,10 +180,13 @@ dynamicApp.directive('barChart', function($parse,$window){
                     .attr("transform", "translate(20,0)")
                     .call(yAxisGen);
 
-                svg.selectAll('rect')
+                barRender = function(){
+                    svg.selectAll('rect').remove();
+                    svg.selectAll('rect')
                     .data(salesDataToPlot)
                     .enter()
                     .append('rect')
+                    .attr("class",rectClass)
                     .attr('x', function(d) {
                       return xScale(d.hour);
                       })
@@ -198,8 +207,19 @@ dynamicApp.directive('barChart', function($parse,$window){
                       d3.select(this)
                         .attr('fill', '#6B6B6B');
                     });
+                } 
+                barRender();   
             }
-            drawLineChart();
+
+            function reDrawbarChart() {
+              setbarChartParams();
+              svg.selectAll("g.y.axis").call(yAxisGen);
+              svg.selectAll("g.x.axis").call(xAxisGen);
+             
+              barRender();
+            }
+
+            drawBarChart();
         }
     }
 });
