@@ -1,6 +1,10 @@
 var dynamicApp = angular.module('studyApp.DynamicCharts', ['ngRoute']);
 
 dynamicApp.controller('dynamicChartsCtrl', function($scope, $interval) {
+    $(".nav a").on("click", function(){
+       $(".nav").find(".active").removeClass("active");
+       $(this).parent().addClass("active");
+    });
     $scope.chartVisible = 'bar';
 	$scope.salesData = [
     {hour: 1,sales: 54},
@@ -122,7 +126,7 @@ dynamicApp.directive('linearChart', function($parse, $window) {
 dynamicApp.directive('barChart', function( $parse, $window){
     return {
         restrict: "EA",
-        template: '<svg width="850" height="200"></svg>',
+        template: '<svg width="850" height="250"></svg>',
         link: function(scope, iElm, iAttrs, controller) {
                var salesDataToPlot = scope[iAttrs.chartData],
                 padding = 20,
@@ -130,21 +134,22 @@ dynamicApp.directive('barChart', function( $parse, $window){
                 xScale, yScale, xAxisGen, yAxisGen, barRender,
                 d3 = $window.d3,
                 rawSvg = iElm.find("svg")[0],
-                svg = d3.select(rawSvg);
+                svg = d3.select(rawSvg),xDomain,
+                numberOfXTicks = 10, xBarValues =[];
 
             //Watching the array if any changes occur.
-            // scope.$watchCollection("salesData", function(newData, oldData){
-            //     salesDataToPlot = newData;
-            //     reDrawbarChart();
-            // });
+            scope.$watchCollection("salesData", function(newData, oldData){
+                salesDataToPlot = newData;
+                reDrawbarChart();
+            });
 
             function setbarChartParams() {
                 //Plotting X-Hour and Y-Sales.
-                xScale = d3.scale.linear()
-                    .domain([0, d3.max(salesDataToPlot, function(d) {
+                xScale = d3.scale.ordinal()
+                    .domain(salesDataToPlot.map(function(d) {
                         return d.hour;
-                    })])
-                    .range([padding + 5, rawSvg.clientWidth - padding]);
+                    }))
+                    .rangeRoundBands([padding, rawSvg.clientWidth - padding],0.2);
 
                 yScale = d3.scale.linear()
                     .domain([0, d3.max(salesDataToPlot, function(d) {
@@ -152,11 +157,21 @@ dynamicApp.directive('barChart', function( $parse, $window){
                     })])
                     .range([rawSvg.clientHeight - padding,0]);
 
+                //Limiting it to 10 xvalues.    
+                xDomain = xScale.domain();
+                xBarValues=[];
+                var seperator = Math.floor((d3.max(xDomain)-d3.min(xDomain))/numberOfXTicks);
+                for(var i=d3.min(xDomain);i<d3.max(xDomain);i++){ 
+                  i = Math.floor(i+seperator); 
+                  xBarValues.push(i);  
+                }
+                console.log(xBarValues);
                 xAxisGen = d3.svg.axis()
                             .scale(xScale)
                             .orient("bottom")
                             .ticks(10)
-                            .tickSubdivide(true);
+                            // .tickSubdivide(true)
+                            .tickValues(xBarValues);
 
                 yAxisGen = d3.svg.axis()
                             .scale(yScale)
@@ -172,7 +187,7 @@ dynamicApp.directive('barChart', function( $parse, $window){
                     
                 svg.append("svg:g")
                     .attr("class", "x axis")
-                    .attr("transform", "translate(0,180)")
+                    .attr("transform", "translate(0,230)")
                     .call(xAxisGen);
 
                 svg.append("svg:g") 
@@ -193,7 +208,7 @@ dynamicApp.directive('barChart', function( $parse, $window){
                     .attr('y',function(d) {
                       return yScale(d.sales);
                       })
-                    .attr('width', 20)
+                    .attr('width', xScale.rangeBand())
                     .attr('height', function(d){
                         return (rawSvg.clientHeight - yScale(d.sales))
                     })

@@ -1,11 +1,17 @@
 <div>
     <div class='container-fluid add-button-container'>
         <h1 class='main-heading'>CRUD - User Profile Management</h1>
-        <button ng-show='loaded' type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#addUser" ng-click="addUser()">Add User</button>
+        <div class='col-md-6'>
+            <button ng-show='loaded' type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#addUser" ng-click="addUser()">Add User</button>
+        </div>
+        <div ng-show='loaded' class="input-group col-md-6">
+            <span class="input-group-addon" id="Search-name">@</span>
+            <input type="text" ng-model='searchText' class="form-control" placeholder="Search" aria-describedby="Search-name">
+        </div>
     </div>
     <div ng-show='loading' class='loading-gif'>
         <div class='overlay'></div>
-        <img src='resources/loading_gif.GIF'/>
+        <img src='resources/loading_gif.GIF' />
     </div>
     <table ng-show='loaded' id='users-list' class="table table-bordered table-hover table-condensed">
         <thead>
@@ -17,7 +23,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="user in userDetails">
+            <tr ng-repeat="user in userDetails | filter:searchText">
                 <td ng-click='editUser($index, user)'>{{user.City}}</td>
                 <td ng-click='editUser($index, user)'>{{user.CompanyName}}</td>
                 <td ng-click='editUser($index, user)'>{{user.CustomerID}}</td>
