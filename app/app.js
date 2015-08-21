@@ -1,7 +1,7 @@
 // 'use strict';
 
 // Declare studyApp level module which depends on views, and components
-angular.module('studyApp', [
+var mainApp = angular.module('studyApp', [
     'ngRoute',
     'ngProgress',
     'studyAppProfile',
@@ -24,8 +24,13 @@ config(['$routeProvider', function($routeProvider) {
         .otherwise({
             redirectTo: '/profile'
         });
-}])
+}]);
 
+mainApp.controller('HeaderContoller', function($scope, $location){
+    $scope.isActive = function(viewLocation){
+        return viewLocation === $location.path();
+    }
+})
 // run(['$rootScope', function($rootScope, ngProgressFactory) {
 //     $rootScope.$on('$routeChangeStart', function(ev, data) {
 //         ngProgress.start();

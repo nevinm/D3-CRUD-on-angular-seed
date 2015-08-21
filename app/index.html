@@ -21,10 +21,10 @@
 </head>
 
 <body>
-    <div class='container-fluid'>
+    <div class='container-fluid' ng-controller="HeaderContoller">
         <ul class="nav nav-tabs">
-            <li role="tab" class="active"><a href="#/profile">Profile</a></li>
-            <li role="tab"><a href="#/DynamicCharts">DynamicCharts</a></li>
+            <li role="tab" ng-class="{active: isActive('/profile')}"><a href="#/profile">Profile</a></li>
+            <li role="tab" ng-class="{active: isActive('/DynamicCharts')}"><a href="#/DynamicCharts">DynamicCharts</a></li>
         </ul>
         <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>

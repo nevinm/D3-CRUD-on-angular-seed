@@ -1,10 +1,6 @@
 var dynamicApp = angular.module('studyApp.DynamicCharts', ['ngRoute']);
 
 dynamicApp.controller('dynamicChartsCtrl', function($scope, $interval) {
-    $(".nav a").on("click", function(){
-       $(".nav").find(".active").removeClass("active");
-       $(this).parent().addClass("active");
-    });
     $scope.chartVisible = 'bar';
 	$scope.salesData = [
     {hour: 1,sales: 54},
@@ -27,7 +23,7 @@ dynamicApp.controller('dynamicChartsCtrl', function($scope, $interval) {
   		"hour": hour,
   		"sales": sales
   	});
-  },1000,1000);
+  },1000,100);
 });
 
 dynamicApp.directive('linearChart', function($parse, $window) {
@@ -160,17 +156,18 @@ dynamicApp.directive('barChart', function( $parse, $window){
                 //Limiting it to 10 xvalues.    
                 xDomain = xScale.domain();
                 xBarValues=[];
-                var seperator = Math.floor((d3.max(xDomain)-d3.min(xDomain))/numberOfXTicks);
-                for(var i=d3.min(xDomain);i<d3.max(xDomain);i++){ 
-                  i = Math.floor(i+seperator); 
-                  xBarValues.push(i);  
-                }
-                console.log(xBarValues);
+                var seperator = ((d3.max(xDomain) - d3.min(xDomain)) / numberOfXTicks);
+for (var i = d3.min(xDomain); i < d3.max(xDomain); i++) {
+    var i = Math.round(i + seperator);
+    if (i < d3.max(xDomain)) {
+        xBarValues.push(i);
+    }
+}
+
+                console.log(xBarValues +"  "+ d3.max(xDomain));
                 xAxisGen = d3.svg.axis()
                             .scale(xScale)
                             .orient("bottom")
-                            .ticks(10)
-                            // .tickSubdivide(true)
                             .tickValues(xBarValues);
 
                 yAxisGen = d3.svg.axis()
