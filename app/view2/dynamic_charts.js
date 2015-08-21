@@ -157,14 +157,13 @@ dynamicApp.directive('barChart', function( $parse, $window){
                 xDomain = xScale.domain();
                 xBarValues=[];
                 var seperator = ((d3.max(xDomain) - d3.min(xDomain)) / numberOfXTicks);
-for (var i = d3.min(xDomain); i < d3.max(xDomain); i++) {
-    var i = Math.round(i + seperator);
-    if (i < d3.max(xDomain)) {
-        xBarValues.push(i);
-    }
-}
+                for (var i = d3.min(xDomain); i < d3.max(xDomain); i++) {
+                    var i = Math.round(i + seperator);
+                    if (i < d3.max(xDomain)) {
+                        xBarValues.push(i);
+                    }
+                }
 
-                console.log(xBarValues +"  "+ d3.max(xDomain));
                 xAxisGen = d3.svg.axis()
                             .scale(xScale)
                             .orient("bottom")
