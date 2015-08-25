@@ -14,12 +14,12 @@ config(['$routeProvider', function($routeProvider) {
         .when('/profile', {
             templateUrl: "view1/profile.html",
             controller: "userCtrl",
-            css: 'view1/profile.css'
+            css: 'view1/styles/profile.css'
         })
         .when('/DynamicCharts', {
             templateUrl: "view2/dynamic_charts.html",
             controller: "dynamicChartsCtrl",
-            css: "view2/dynamic_charts.css"
+            css: "view2/styles/dynamic_charts.css"
         })
         .otherwise({
             redirectTo: '/profile'
