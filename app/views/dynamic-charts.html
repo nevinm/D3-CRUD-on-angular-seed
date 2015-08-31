@@ -1,17 +1,22 @@
 <div class='container-fluid'>
-    <div id='line-chart' linear-chart class='col-md-9' chart-data='salesData' ng-show='chartVisible == "line"'></div>
-    <div id='bar-chart' bar-chart class='col-md-9' chart-data='salesData' ng-show='chartVisible == "bar"'></div>
-    <div class='col-md-3'>
-        <form role="form">
-            <div class="radio">
-                <label>
-                    <input type="radio" name="chart" ng-click="chartSelect('line')" ng-model='chartVisible' value='line'>Line Chart
-                </label>
-            </div>
-            <div class="radio">
-                <label>
-                    <input type="radio" checked="checked" name="chart" ng-click="chartSelect('bar')" ng-model='chartVisible' value='bar'>Bar Chart</label>
-            </div>
-        </form>
+    <div class='col-md-12'>
+        <div id='line-chart' linear-chart class='col-md-9' chart-data='salesData' ng-show='chartVisible == "line"'></div>
+        <div id='bar-chart' bar-chart class='col-md-9' chart-data='salesData' ng-show='chartVisible == "bar"'></div>
+        <div class='col-md-3'>
+            <form role="form">
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="chart" ng-click="chartSelect('line')" ng-model='chartVisible' value='line'>Line Chart
+                    </label>
+                </div>
+                <div class="radio">
+                    <label>
+                        <input type="radio" checked="checked" name="chart" ng-click="chartSelect('bar')" ng-model='chartVisible' value='bar'>Bar Chart</label>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class='col-md-12'>
+    <h3>This tab uses a d3 directive to represent and render dynamic data which is constantly updated.</h3>
     </div>
 </div>
