@@ -18,6 +18,14 @@
     z-index: 99;
 }
 
-.main-heading{
-	text-align: center;
+.main-heading {
+    text-align: center;
+}
+
+form.ng-submitted .ng-invalid {
+    border-color: red;
+}
+
+.ng-valid.ng-dirty {
+    border-color: green;
 }

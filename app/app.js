@@ -30,8 +30,9 @@ mainApp.controller('HeaderContoller', function($scope, $location){
     $scope.isActive = function(viewLocation){
         return viewLocation === $location.path();
     }
-})
-// run(['$rootScope', function($rootScope, ngProgressFactory) {
+});
+
+// mainApp.run(['$rootScope', function($rootScope, ngProgressFactory) {
 //     $rootScope.$on('$routeChangeStart', function(ev, data) {
 //         ngProgress.start();
 //     });
