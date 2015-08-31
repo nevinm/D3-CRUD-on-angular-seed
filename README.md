@@ -91,7 +91,10 @@ app/                    --> all of the source files for the application
       interpolate-filter_test.js --> interpolate filter tests
   jsons                          --> contains the json files
   directives                     --> contains the directives used in the app
+    dynamic-charts-directives.js --> the directive for chart rendering
   styles/               --> contains all the styles required in the tabs
+    dynamic-charts.css
+    dynamic-charts.css
   views/                --> contains all the views
     add-user.html          
     delete-user.html            
