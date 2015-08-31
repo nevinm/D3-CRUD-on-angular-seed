@@ -12,14 +12,14 @@ var mainApp = angular.module('studyApp', [
 config(['$routeProvider', function($routeProvider) {
     $routeProvider
         .when('/profile', {
-            templateUrl: "view1/profile.html",
+            templateUrl: "views/profile.html",
             controller: "userCtrl",
-            css: 'view1/styles/profile.css'
+            css: 'styles/profile.css'
         })
         .when('/DynamicCharts', {
-            templateUrl: "view2/dynamic_charts.html",
+            templateUrl: "views/dynamic-charts.html",
             controller: "dynamicChartsCtrl",
-            css: "view2/styles/dynamic_charts.css"
+            css: "styles/dynamic-charts.css"
         })
         .otherwise({
             redirectTo: '/profile'
