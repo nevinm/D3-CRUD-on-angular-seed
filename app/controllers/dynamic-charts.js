@@ -23,6 +23,6 @@ dynamicApp.controller('dynamicChartsCtrl', function($scope, $interval) {
   		"hour": hour,
   		"sales": sales
   	});
-  },1000,100);
+  },1000,50);
 });
 
