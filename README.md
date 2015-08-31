@@ -1,4 +1,6 @@
-# angular-seed — the seed for AngularJS apps
+# Angular-seed — the seed for AngularJS apps
+
+#Updated the app from an Angular seed to multiple tabs containing a basic CRUD application plus a d3 chart rendering.
 
 This project is an application skeleton for a typical [AngularJS](http://angularjs.org/) web app.
 You can use it to quickly bootstrap your angular webapp projects and dev environment for these
